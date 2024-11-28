@@ -13,10 +13,6 @@ let id = letter+
 rule read =
   parse
   | white { read lexbuf }
-  | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
-  | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
-  | str { STRING (Lexing.lexeme lexbuf) }
-  | id { ID (Lexing.lexeme lexbuf) }
   | "()" { UNIT }
   | "fr" { TRUE }
   | "nah" { FALSE }
@@ -39,4 +35,8 @@ rule read =
   | "lowkey" { IF }
   | "cap" { ELSE }
   | ";" { SEMI }
+  | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
+  | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
+  | str { STRING (String.sub (Lexing.lexeme lexbuf) 1 (String.length (Lexing.lexeme lexbuf) - 2)) }
+  | id { ID (Lexing.lexeme lexbuf) }
   | eof { EOF }
