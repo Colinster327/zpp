@@ -24,5 +24,6 @@ type expr =
   | Unop of uop * expr
   | Binop of bop * expr * expr
   | Let of string * expr * expr
+  | Upd of string * expr * expr
   | Ite of expr * expr * expr
   | Cout of expr

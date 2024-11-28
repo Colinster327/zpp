@@ -62,5 +62,6 @@ expr:
   | e1 = expr; GEQ; e2 = expr { Binop (Geq, e1, e2) }
   | e1 = expr; EQUAL; e2 = expr { Binop (Equal, e1, e2) }
   | LET; x = ID; EQUAL; e1 = expr; SEMI; e2 = expr { Let (x, e1, e2) }
+  | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Ite (e1, e2, e3) }
   | COUT; e = expr; SEMI { Cout e }

@@ -1,11 +1,26 @@
 open Ast
 
-type 'a env = string -> 'a
+type 'a env = ((string * 'a) ref) list
 
-let init_env : 'a env = fun x -> failwith (x ^ " is unbound")
-let lookup (rho : 'a env) (x : string) : 'a = rho x 
-let upd (rho : 'a env) (x : string) (new_a : 'a) : 'a env =
-  fun y -> if x = y then new_a else rho y
+let init_env : 'a env = []
+
+let rec lookup (rho : 'a env) (x : string) : 'a =
+  match rho with
+  | [] -> failwith (x ^ " is unbound")
+  | h :: t ->
+    let (x', a_val) = !h in
+    if x' = x then a_val else lookup t x
+
+let add_to_env (rho : 'a env) (x : string) (new_a : 'a) : 'a env =
+  let new_env_val = ref (x, new_a) in
+  new_env_val :: rho
+
+let rec upd_env (rho : 'a env) (x : string) (upd_a : 'a) : unit =
+  match rho with
+  | [] -> failwith (x ^ " is unbound")
+  | h :: t ->
+    let (x', _) = !h in
+    if x' = x then h := (x', upd_a) else upd_env t x upd_a
 
 let uop_err = "Invalid Unary Expression"
 let bop_err = "Invalid Binary Expression"
@@ -20,7 +35,9 @@ let rec interp rho = function
   | Int i -> Int i
   | Float f -> Float f
   | Str s -> Str s
-  | Ident x -> lookup rho x
+  | Ident x ->
+    let e = lookup rho x in
+    interp rho e
   | True -> True
   | False -> False
   | Unop (uop, e) ->
@@ -75,8 +92,12 @@ let rec interp rho = function
       | _ -> failwith bop_err)
   | Let (x, e1, e2) ->
     let ie1 = interp rho e1 in
-    let new_env = upd rho x ie1 in
+    let new_env = add_to_env rho x ie1 in
     interp new_env e2
+  | Upd (x, e1, e2) ->
+    let ie1 = interp rho e1 in
+    upd_env rho x ie1;
+    interp rho e2
   | Ite (e1, e2, e3) ->
     let ie1 = interp rho e1 in
     (match ie1 with
