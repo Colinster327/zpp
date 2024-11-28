@@ -16,6 +16,13 @@ let make_b n b s =
 let make_fail n s' s =
   n >:: (fun _ -> assert_raises (Failure s') (fun _ -> run s))
 
+let ex1 = "vibecheck x = 5; lowkey (x < 7) {6 * 4} cap {x / 5}"
+let ex2 = "vibecheck y = 10; lowkey (y > 5) {y - 3} cap {y + 3}"
+let ex3 = "vibecheck a = 2; vibecheck b = 3; 4 + a * b"
+let ex4 = "vibecheck x = 4; vibecheck y = 2; lowkey (x > y) {x / y} cap {y / x}"
+let ex5 = "vibecheck x = 3; vibecheck y = 4; lowkey (x = y) {x + y} cap {x - y}"
+let ex6 = "vibecheck x = 5.5; vibecheck y = 10.0; lowkey (x < y) {y - x} cap {x - y}"
+
 let tests = [
   make_i "add" 6 "3 + 3";
   make_i "sub" 1 "3 - 2";
@@ -56,6 +63,12 @@ let tests = [
   make_f "neg_float" (-3.5) "vibecheck x = 3.5; -x";
   make_fail "invalid_uop" uop_err "!3";
   make_fail "invalid_bop" bop_err "3 * nah";
+  make_i "complex_expr1" 24 ex1;
+  make_i "complex_expr2" 7 ex2;
+  make_i "complex_expr3" 10 ex3;
+  make_i "complex_expr4" 2 ex4;
+  make_i "complex_expr5" (-1) ex5;
+  make_f "complex_expr6" 4.5 ex6;
 ]
 
 let _ = run_test_tt_main ("zpp interpreter" >::: tests)
