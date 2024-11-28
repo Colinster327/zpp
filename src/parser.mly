@@ -28,9 +28,10 @@ open Ast
 %token IF 
 %token ELSE
 %token SEMI
+%token CARET
 %token EOF
 
-%left LEQ LT GT GEQ EQUAL
+%left LEQ LT GT GEQ EQUAL CARET
 %left PLUS MINUS
 %left TIMES SLASH
 
@@ -61,7 +62,11 @@ expr:
   | e1 = expr; GT; e2 = expr { Binop (Gt, e1, e2) }
   | e1 = expr; GEQ; e2 = expr { Binop (Geq, e1, e2) }
   | e1 = expr; EQUAL; e2 = expr { Binop (Equal, e1, e2) }
+  | e1 = expr; CARET; e2 = expr { Binop (Concat, e1, e2) }
   | LET; x = ID; EQUAL; e1 = expr; SEMI; e2 = expr { Let (x, e1, e2) }
+  | LET; x = ID; EQUAL; e1 = expr; SEMI { Let (x, e1, Unit) }
   | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }
+  | x = ID; LEQ; e1 = expr; SEMI { Upd (x, e1, Unit) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Ite (e1, e2, e3) }
-  | COUT; e = expr; SEMI { Cout e }
+  | COUT; e1 = expr; SEMI; e2 = expr { Cout (e1, e2) }
+  | COUT; e1 = expr; SEMI { Cout (e1, Unit) }

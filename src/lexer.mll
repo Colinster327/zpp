@@ -35,6 +35,7 @@ rule read =
   | "lowkey" { IF }
   | "cap" { ELSE }
   | ";" { SEMI }
+  | "^" { CARET }
   | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | str { STRING (String.sub (Lexing.lexeme lexbuf) 1 (String.length (Lexing.lexeme lexbuf) - 2)) }

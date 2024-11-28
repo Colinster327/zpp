@@ -89,6 +89,12 @@ let rec interp rho = function
       | Equal, False, False -> True
       | Equal, True, False -> False
       | Equal, False, True -> False
+      (* String operations *)
+      | Concat, Str x, Str y -> Str (x ^ y)
+      | Concat, Int x, Str y -> Str (string_of_int x ^ y)
+      | Concat, Float x, Str y -> Str (string_of_float x ^ y)
+      | Concat, Str x, Int y -> Str (x ^ string_of_int y)
+      | Concat, Str x, Float y -> Str (x ^ string_of_float y)
       | _ -> failwith bop_err)
   | Let (x, e1, e2) ->
     let ie1 = interp rho e1 in
@@ -104,10 +110,10 @@ let rec interp rho = function
       | True -> interp rho e2
       | False -> interp rho e3
       | _ -> failwith "Invalid If-Then-Else Expression")
-  | Cout e ->
-    let ie = interp rho e in
-    (match ie with
-      | Str s -> print_string s; Unit
+  | Cout (e1, e2) ->
+    let ie1 = interp rho e1 in
+    (match ie1 with
+      | Str s -> print_string s; interp rho e2
       | _ -> failwith "Invalid Output Expression")
 
   let run s =

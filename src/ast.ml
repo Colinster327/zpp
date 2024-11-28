@@ -12,6 +12,7 @@ type bop =
   | Gt
   | Geq
   | Equal
+  | Concat
 
 type expr =
   | Unit
@@ -26,4 +27,4 @@ type expr =
   | Let of string * expr * expr
   | Upd of string * expr * expr
   | Ite of expr * expr * expr
-  | Cout of expr
+  | Cout of expr * expr
