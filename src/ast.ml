@@ -13,6 +13,8 @@ type bop =
   | Geq
   | Equal
   | Concat
+  | Conj
+  | Disj
 
 type expr =
   | Unit

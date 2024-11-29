@@ -30,8 +30,12 @@ open Ast
 %token SEMI
 %token CARET
 %token WHILE
+%token CONJ
+%token DISJ
 %token EOF
 
+%left DISJ
+%left CONJ
 %left LEQ LT GT GEQ EQUAL CARET
 %left PLUS MINUS
 %left TIMES SLASH
@@ -65,6 +69,8 @@ expr:
   | e1 = expr; GEQ; e2 = expr { Binop (Geq, e1, e2) }
   | e1 = expr; EQUAL; e2 = expr { Binop (Equal, e1, e2) }
   | e1 = expr; CARET; e2 = expr { Binop (Concat, e1, e2) }
+  | e1 = expr; CONJ; e2 = expr { Binop (Conj, e1, e2) }
+  | e1 = expr; DISJ; e2 = expr { Binop (Disj, e1, e2) }
   | LET; x = ID; EQUAL; e1 = expr; SEMI; e2 = expr { Let (x, e1, e2) }
   | LET; x = ID; EQUAL; e1 = expr; SEMI { Let (x, e1, Unit) }
   | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }

@@ -31,6 +31,7 @@ let ex9 = "vibecheck x = 1;
            x + y"
 let ex10 = "vibecheck x = 60; vibecheck y = \"hello\"; y ^ x"
 let ex11 = "vibecheck x = 0; grind x < 6 {x <= x + 1;} x"
+let ex12 = "fr || fr && nah"
 
 let tests = [
   make_i "add" 6 "3 + 3";
@@ -63,6 +64,9 @@ let tests = [
   make_b "geq_float_false" false "3.5 >= 4.0";
   make_b "equal_float_true" true "3.5 = 3.5";
   make_b "equal_float_false" false "3.5 = 4.0";
+  make_b "conj" true "fr && fr";
+  make_b "disj" false "nah || nah";
+  make_fail "invalid conj" bop_err "5 && nah";
   make_s "string" "hello" "\"hello\"";
   make_s "str-str concat" "hello world" "\"hello\" ^ \" world\"";
   make_s "int-str concat" "5test" "5 ^ \"test\"";
@@ -87,6 +91,7 @@ let tests = [
   make_i "complex assign" 10 ex9;
   make_s "complex concat" "hello60" ex10;
   make_i "while loop" 6 ex11;
+  make_b "complex bool op" true ex12;
 ]
 
 let _ = run_test_tt_main ("zpp interpreter" >::: tests)

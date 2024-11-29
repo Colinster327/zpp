@@ -43,9 +43,12 @@ let rec interp rho = function
   | Unop (uop, e) ->
     let ie = interp rho e in
     (match uop, ie with
+      (* Bool operations *)
       | Not, True -> False
       | Not, False -> True
+      (* Int operations *)
       | Neg, Int i -> (Int (-i))
+      (* Float operations *)
       | Neg, Float f -> (Float (-.f))
       | _, _ -> failwith uop_err)
   | Binop (bop, e1, e2) ->
@@ -89,6 +92,14 @@ let rec interp rho = function
       | Equal, False, False -> True
       | Equal, True, False -> False
       | Equal, False, True -> False
+      | Conj, True, True -> True
+      | Conj, True, False -> False
+      | Conj, False, True -> False
+      | Conj, False, False -> False
+      | Disj, True, True -> True
+      | Disj, True, False -> True 
+      | Disj, False, True -> True 
+      | Disj, False, False -> False
       (* String operations *)
       | Concat, Str x, Str y -> Str (x ^ y)
       | Concat, Int x, Str y -> Str (string_of_int x ^ y)
