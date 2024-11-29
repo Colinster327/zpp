@@ -104,11 +104,21 @@ let rec interp rho = function
     let ie1 = interp rho e1 in
     upd_env rho x ie1;
     interp rho e2
-  | Ite (e1, e2, e3) ->
+  | Tny (e1, e2, e3) ->
     let ie1 = interp rho e1 in
     (match ie1 with
       | True -> interp rho e2
       | False -> interp rho e3
+      | _ -> failwith "Invalid If-Then-Else Expression")
+  | Ite (e1, e2, e3, e4) ->
+    let ie1 = interp rho e1 in
+    (match ie1 with
+      | True ->
+        let _ = interp rho e2 in
+        interp rho e4
+      | False ->
+        let _ = interp rho e3 in
+        interp rho e4
       | _ -> failwith "Invalid If-Then-Else Expression")
   | Cout (e1, e2) ->
     let ie1 = interp rho e1 in

@@ -7,7 +7,7 @@ let digit = ['0'-'9']
 let int = '-'?digit+
 let float = '-'?digit+'.'digit+
 let letter = ['a'-'z' 'A'-'Z']
-let str = '"' [^ '"']* '"'
+let str = '"' ('\\' '"' | [^ '"'])* '"'
 let id = letter+
 
 rule read =
@@ -38,6 +38,6 @@ rule read =
   | "^" { CARET }
   | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
-  | str { STRING (String.sub (Lexing.lexeme lexbuf) 1 (String.length (Lexing.lexeme lexbuf) - 2)) }
+  | str { STRING (Scanf.unescaped (String.sub (Lexing.lexeme lexbuf) 1 (String.length (Lexing.lexeme lexbuf) - 2))) }
   | id { ID (Lexing.lexeme lexbuf) }
   | eof { EOF }

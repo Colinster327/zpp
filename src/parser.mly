@@ -48,6 +48,7 @@ expr:
   | f = FLOAT { Float f }
   | s = STRING { Str s }
   | x = ID { Ident x }
+  | UNIT { Unit }
   | TRUE { True }
   | FALSE { False }
   | LPAREN; e = expr RPAREN { e }
@@ -67,6 +68,8 @@ expr:
   | LET; x = ID; EQUAL; e1 = expr; SEMI { Let (x, e1, Unit) }
   | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }
   | x = ID; LEQ; e1 = expr; SEMI { Upd (x, e1, Unit) }
-  | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Ite (e1, e2, e3) }
+  | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK; e4 = expr { Ite (e1, e2, e3, e4) }
+  | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Tny (e1, e2, e3) }
+  | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; e3 = expr { Ite (e1, e2, Unit, e3) }
   | COUT; e1 = expr; SEMI; e2 = expr { Cout (e1, e2) }
   | COUT; e1 = expr; SEMI { Cout (e1, Unit) }
