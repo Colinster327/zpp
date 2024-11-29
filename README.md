@@ -15,6 +15,7 @@ To install the Generation Z Interpreter, clone the repository and build the proj
 ```sh
 git clone https://github.com/Colinster327/zpp.git
 cd zpp
+opam install . --deps-only
 dune build
 ```
 
