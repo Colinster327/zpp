@@ -30,6 +30,7 @@ let ex9 = "vibecheck x = 1;
            y <= x + 2;
            x + y"
 let ex10 = "vibecheck x = 60; vibecheck y = \"hello\"; y ^ x"
+let ex11 = "vibecheck x = 0; grind x < 6 {x <= x + 1;} x"
 
 let tests = [
   make_i "add" 6 "3 + 3";
@@ -85,6 +86,7 @@ let tests = [
   make_i "increment" 5 ex8;
   make_i "complex assign" 10 ex9;
   make_s "complex concat" "hello60" ex10;
+  make_i "while loop" 6 ex11;
 ]
 
 let _ = run_test_tt_main ("zpp interpreter" >::: tests)

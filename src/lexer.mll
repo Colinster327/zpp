@@ -36,6 +36,7 @@ rule read =
   | "cap" { ELSE }
   | ";" { SEMI }
   | "^" { CARET }
+  | "grind" { WHILE }
   | float { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | str { STRING (Scanf.unescaped (String.sub (Lexing.lexeme lexbuf) 1 (String.length (Lexing.lexeme lexbuf) - 2))) }

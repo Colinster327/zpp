@@ -125,6 +125,14 @@ let rec interp rho = function
     (match ie1 with
       | Str s -> print_string s; interp rho e2
       | _ -> failwith "Invalid Output Expression")
+  | While (e1, e2, e3) ->
+    let ie1 = interp rho e1 in
+    (match ie1 with
+      | True -> 
+        let _ = interp rho e2 in
+        interp rho (While (e1, e2, e3))
+      | False -> interp rho e3
+      | _ -> failwith "Invalid While Loop Expression")
 
   let run s =
     s |> parse |> interp init_env

@@ -28,4 +28,5 @@ type expr =
   | Upd of string * expr * expr
   | Tny of expr * expr * expr
   | Ite of expr * expr * expr * expr
+  | While of expr * expr * expr
   | Cout of expr * expr

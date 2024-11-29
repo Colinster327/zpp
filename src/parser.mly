@@ -29,6 +29,7 @@ open Ast
 %token ELSE
 %token SEMI
 %token CARET
+%token WHILE
 %token EOF
 
 %left LEQ LT GT GEQ EQUAL CARET
@@ -71,5 +72,7 @@ expr:
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK; e4 = expr { Ite (e1, e2, e3, e4) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Tny (e1, e2, e3) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; e3 = expr { Ite (e1, e2, Unit, e3) }
+  | WHILE; e1 = expr; LBRACK; e2 = expr; RBRACK; e3 = expr { While (e1, e2, e3) }
+  | WHILE; e1 = expr; LBRACK; e2 = expr; RBRACK { While (e1, e2, Unit) }
   | COUT; e1 = expr; SEMI; e2 = expr { Cout (e1, e2) }
   | COUT; e1 = expr; SEMI { Cout (e1, Unit) }
