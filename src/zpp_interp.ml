@@ -25,6 +25,12 @@ let rec upd_env (rho : 'a env) (x : string) (upd_a : 'a) : unit =
 let uop_err = "Invalid Unary Expression"
 let bop_err = "Invalid Binary Expression"
 let div_zero_err = "Division By Zero"
+let tny_err = "Invalid Ternary Expression"
+let ite_err = "Invalid If-Then_else Expression"
+let cout_err = "Invalid Output Expression"
+let while_err = "Invalid While Loop Expression"
+let app_err = "Invalid Function Application"
+let num_arg_err = "Invalid Number of Arguments"
 
 let parse (s : string) : expr =
   let lexbuf = Lexing.from_string s in
@@ -40,6 +46,7 @@ let rec interp rho = function
     interp rho e
   | True -> True
   | False -> False
+  | Fun (params, body) -> Fun (params, body)
   | Unop (uop, e) ->
     let ie = interp rho e in
     (match uop, ie with
@@ -140,7 +147,7 @@ let rec interp rho = function
     (match ie1 with
       | True -> interp rho e2
       | False -> interp rho e3
-      | _ -> failwith "Invalid If-Then-Else Expression")
+      | _ -> failwith tny_err)
   | Ite (e1, e2, e3, e4) ->
     let ie1 = interp rho e1 in
     (match ie1 with
@@ -150,12 +157,12 @@ let rec interp rho = function
       | False ->
         let _ = interp rho e3 in
         interp rho e4
-      | _ -> failwith "Invalid If-Then-Else Expression")
+      | _ -> failwith ite_err)
   | Cout (e1, e2) ->
     let ie1 = interp rho e1 in
     (match ie1 with
       | Str s -> print_string s; interp rho e2
-      | _ -> failwith "Invalid Output Expression")
+      | _ -> failwith cout_err)
   | While (e1, e2, e3) ->
     let ie1 = interp rho e1 in
     (match ie1 with
@@ -163,7 +170,18 @@ let rec interp rho = function
         let _ = interp rho e2 in
         interp rho (While (e1, e2, e3))
       | False -> interp rho e3
-      | _ -> failwith "Invalid While Loop Expression")
+      | _ -> failwith while_err)
+  | FApp (e, args) ->
+    let f = interp rho e in
+    let iargs = List.map (interp rho) args in
+    (match f with
+      | Fun (params, body) ->
+        let new_env = 
+          try List.fold_left2 add_to_env rho params iargs
+          with Invalid_argument _ -> failwith num_arg_err
+        in
+        interp new_env body
+      | _ -> failwith app_err)
 
   let run s =
     s |> parse |> interp init_env

@@ -8,8 +8,7 @@ open Ast
 %token <string> ID
 %token UNIT
 %token EXCLAM
-%token TRUE
-%token FALSE
+%token TRUE FALSE
 %token LEQ
 %token LT
 %token GT
@@ -18,18 +17,18 @@ open Ast
 %token MINUS
 %token TIMES
 %token SLASH
-%token LPAREN
-%token RPAREN
-%token LBRACK
-%token RBRACK
+%token LPAREN RPAREN
+%token LBRACK RBRACK
+%token LBRACE RBRACE
+%token RARROW
 %token COUT
 %token LET 
 %token EQUAL
-%token DEQUAL
-%token NEQUAL
+%token DEQUAL NEQUAL
 %token IF 
 %token ELSE
 %token SEMI
+%token COMMA
 %token CARET
 %token WHILE
 %token CONJ
@@ -80,6 +79,8 @@ expr:
   | LET; x = ID; EQUAL; e1 = expr; SEMI { Let (x, e1, Unit) }
   | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }
   | x = ID; LEQ; e1 = expr; SEMI { Upd (x, e1, Unit) }
+  | LBRACE; params = id_list; RBRACE; RARROW; LBRACK; e = expr; RBRACK { Fun (params, e) }
+  | e = expr; LBRACE; args = expr_list; RBRACE { FApp (e, args) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK; e4 = expr { Ite (e1, e2, e3, e4) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Tny (e1, e2, e3) }
   | IF; e1 = expr; LBRACK; e2 = expr; RBRACK; e3 = expr { Ite (e1, e2, Unit, e3) }
@@ -87,3 +88,11 @@ expr:
   | WHILE; e1 = expr; LBRACK; e2 = expr; RBRACK { While (e1, e2, Unit) }
   | COUT; e1 = expr; SEMI; e2 = expr { Cout (e1, e2) }
   | COUT; e1 = expr; SEMI { Cout (e1, Unit) }
+
+id_list:
+  | x = ID { [x] }
+  | x = ID; COMMA; xs = id_list { x :: xs }
+
+expr_list:
+  | e = expr { [e] }
+  | e = expr; COMMA; es = expr_list { e :: es }

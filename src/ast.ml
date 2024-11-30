@@ -33,3 +33,5 @@ type expr =
   | Ite of expr * expr * expr * expr
   | While of expr * expr * expr
   | Cout of expr * expr
+  | Fun of string list * expr
+  | FApp of expr * expr list

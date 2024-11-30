@@ -23,6 +23,7 @@ rule read =
   | ">" { GT }
   | ">=" { GEQ }
   | "==" { DEQUAL }
+  | "=>" { RARROW }
   | "=" { EQUAL }
   | "+" { PLUS }
   | "-" { MINUS }
@@ -32,11 +33,14 @@ rule read =
   | ")" { RPAREN }
   | "{" { LBRACK }
   | "}" { RBRACK }
+  | "[" { LBRACE }
+  | "]" { RBRACE }
   | "slay" { COUT }
   | "vibecheck" { LET }
   | "lowkey" { IF }
   | "cap" { ELSE }
   | ";" { SEMI }
+  | "," { COMMA }
   | "^" { CARET }
   | "grind" { WHILE }
   | "&&" { CONJ }
