@@ -27,19 +27,64 @@ To run a Generation Z program, use the following command:
 dune exec zpp path/to/your/program.zpp
 ```
 
-## Example
+## Basic Syntax
 
-Here is a simple example of a Generation Z program:
+Here are some examples to help you understand the syntax of the zpp programming language:
+
+### Variable Declaration and Conditional Statements
+
+```zpp
+vibecheck x = 5;
+lowkey (x < 7) {
+  6 * 4
+} cap {
+  x / 5
+}
+```
+
+### Arithmetic Operations
+
+```zpp
+vibecheck a = 2;
+vibecheck b = 3;
+4 + a * b
+```
+
+### Looping
+
+```zpp
+vibecheck x = 0;
+grind x < 6 {
+  x <= x + 1;
+}
+```
+
+### Functions
+
+```zpp
+vibecheck add = [x, y] => {
+  x + y
+};
+add [5, 5]
+```
+
+### Recursion
+
+```zpp
+vibecheck fib = [n] => {
+  lowkey n < 2 { n }
+  cap {fib [n - 1] + fib [n - 2]}
+};
+fib [5]
+```
+
+### Standard Output
 
 ```zpp
 slay "Hello World!";
 ```
 
-To run this program, save it to a file (e.g., `hello.zpp`) and execute:
-
-```sh
-dune exec zpp hello.zpp
-```
+To run a program, save it to a file (e.g., `hello.zpp`) and execute:
 
 ## Contributing
 
