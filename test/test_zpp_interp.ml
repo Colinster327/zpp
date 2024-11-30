@@ -16,23 +16,23 @@ let make_b n b s =
 let make_fail n s' s =
   n >:: (fun _ -> assert_raises (Failure s') (fun _ -> run s))
 
-let ex1 = "vibecheck x = 5; lowkey (x < 7) {6 * 4} cap {x / 5}"
-let ex2 = "vibecheck y = 10; lowkey (y > 5) {y - 3} cap {y + 3}"
+let ex1 = "vibecheck x = 5; lowkey [x < 7] {6 * 4} cap {x / 5}"
+let ex2 = "vibecheck y = 10; lowkey [y > 5] {y - 3} cap {y + 3}"
 let ex3 = "vibecheck a = 2; vibecheck b = 3; 4 + a * b"
-let ex4 = "vibecheck x = 4; vibecheck y = 2; lowkey (x > y) {x / y} cap {y / x}"
-let ex5 = "vibecheck x = 3; vibecheck y = 4; lowkey (x == y) {x + y} cap {x - y}"
-let ex6 = "vibecheck x = 5.5; vibecheck y = 10.0; lowkey (x < y) {y - x} cap {x - y}"
+let ex4 = "vibecheck x = 4; vibecheck y = 2; lowkey [x > y] {x / y} cap {y / x}"
+let ex5 = "vibecheck x = 3; vibecheck y = 4; lowkey [x == y] {x + y} cap {x - y}"
+let ex6 = "vibecheck x = 5.5; vibecheck y = 10.0; lowkey [x < y] {y - x} cap {x - y}"
 let ex7 = "vibecheck x = 11; x <= 6; x"
 let ex8 = "vibecheck x = 0; x <= x + 5; x"
 let ex9 = "vibecheck x = 1; 
-           vibecheck y = 2;
-           x <= y + 2;
-           y <= x + 2;
-           x + y"
+       vibecheck y = 2;
+       x <= y + 2;
+       y <= x + 2;
+       x + y"
 let ex10 = "vibecheck x = 60; vibecheck y = \"hello\"; y ^ x"
-let ex11 = "vibecheck x = 0; grind x < 6 {x <= x + 1;} x"
+let ex11 = "vibecheck x = 0; grind [x < 6] {x <= x + 1;} x"
 let ex12 = "fr || fr && nah"
-let ex13 = "vibecheck fib = [n] => {lowkey n < 2 { n } cap {fib [n - 1] + fib [n - 2]}}; fib [5]"
+let ex13 = "vibecheck fib = [n] => {lowkey [n < 2] { n } cap {fib [n - 1] + fib [n - 2]}}; fib [5]"
 let ex14 = "vibecheck add = [x, y] => {x + y}; add [5, 5]"
 
 let tests = [

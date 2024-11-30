@@ -35,7 +35,7 @@ Here are some examples to help you understand the syntax of the zpp programming 
 
 ```zpp
 vibecheck x = 5;
-lowkey (x < 7) {
+lowkey [x < 7] {
   6 * 4
 } cap {
   x / 5
@@ -54,7 +54,7 @@ vibecheck b = 3;
 
 ```zpp
 vibecheck x = 0;
-grind x < 6 {
+grind [x < 6] {
   x <= x + 1;
 }
 ```
@@ -72,7 +72,7 @@ add [5, 5]
 
 ```zpp
 vibecheck fib = [n] => {
-  lowkey n < 2 { n }
+  lowkey [n < 2] { n }
   cap {fib [n - 1] + fib [n - 2]}
 };
 fib [5]
