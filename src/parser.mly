@@ -25,6 +25,8 @@ open Ast
 %token COUT
 %token LET 
 %token EQUAL
+%token DEQUAL
+%token NEQUAL
 %token IF 
 %token ELSE
 %token SEMI
@@ -34,9 +36,11 @@ open Ast
 %token DISJ
 %token EOF
 
+%nonassoc EQUAL
+
 %left DISJ
 %left CONJ
-%left LEQ LT GT GEQ EQUAL CARET
+%left LEQ LT GT GEQ DEQUAL CARET
 %left PLUS MINUS
 %left TIMES SLASH
 
@@ -67,7 +71,8 @@ expr:
   | e1 = expr; LT; e2 = expr { Binop (Lt, e1, e2) }
   | e1 = expr; GT; e2 = expr { Binop (Gt, e1, e2) }
   | e1 = expr; GEQ; e2 = expr { Binop (Geq, e1, e2) }
-  | e1 = expr; EQUAL; e2 = expr { Binop (Equal, e1, e2) }
+  | e1 = expr; DEQUAL; e2 = expr { Binop (Equal, e1, e2) }
+  | e1 = expr; NEQUAL; e2 = expr { Binop (NEqual, e1, e2) }
   | e1 = expr; CARET; e2 = expr { Binop (Concat, e1, e2) }
   | e1 = expr; CONJ; e2 = expr { Binop (Conj, e1, e2) }
   | e1 = expr; DISJ; e2 = expr { Binop (Disj, e1, e2) }

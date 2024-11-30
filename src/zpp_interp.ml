@@ -71,6 +71,8 @@ let rec interp rho = function
         if x >= y then True else False
       | Equal, Int x, Int y ->
         if x = y then True else False
+      | NEqual, Int x, Int y ->
+        if x <> y then True else False
       (* Float operations *)
       | Add, Float x, Float y -> Float (x +. y)
       | Sub, Float x, Float y -> Float (x -. y)
@@ -87,11 +89,17 @@ let rec interp rho = function
         if x >= y then True else False
       | Equal, Float x, Float y ->
         if x = y then True else False
+      | NEqual, Float x, Float y ->
+        if x <> y then True else False
       (* Bool operations *)
       | Equal, True, True -> True
       | Equal, False, False -> True
       | Equal, True, False -> False
       | Equal, False, True -> False
+      | NEqual, True, True -> False 
+      | NEqual, False, False -> False 
+      | NEqual, True, False -> True 
+      | NEqual, False, True -> True
       | Conj, True, True -> True
       | Conj, True, False -> False
       | Conj, False, True -> False
@@ -106,6 +114,18 @@ let rec interp rho = function
       | Concat, Float x, Str y -> Str (string_of_float x ^ y)
       | Concat, Str x, Int y -> Str (x ^ string_of_int y)
       | Concat, Str x, Float y -> Str (x ^ string_of_float y)
+      | Leq, Str x, Str y ->
+        if x <= y then True else False
+      | Lt, Str x, Str y ->
+        if x < y then True else False
+      | Gt, Str x, Str y ->
+        if x > y then True else False
+      | Geq, Str x, Str y ->
+        if x >= y then True else False
+      | Equal, Str x, Str y ->
+        if x = y then True else False
+      | NEqual, Str x, Str y ->
+        if x <> y then True else False
       | _ -> failwith bop_err)
   | Let (x, e1, e2) ->
     let ie1 = interp rho e1 in

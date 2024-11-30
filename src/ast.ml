@@ -12,6 +12,7 @@ type bop =
   | Gt
   | Geq
   | Equal
+  | NEqual
   | Concat
   | Conj
   | Disj

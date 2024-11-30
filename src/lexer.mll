@@ -16,11 +16,13 @@ rule read =
   | "()" { UNIT }
   | "fr" { TRUE }
   | "nah" { FALSE }
+  | "!=" { NEQUAL }
   | "!" { EXCLAM }
   | "<=" { LEQ }
   | "<" { LT }
   | ">" { GT }
   | ">=" { GEQ }
+  | "==" { DEQUAL }
   | "=" { EQUAL }
   | "+" { PLUS }
   | "-" { MINUS }

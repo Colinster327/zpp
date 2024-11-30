@@ -20,7 +20,7 @@ let ex1 = "vibecheck x = 5; lowkey (x < 7) {6 * 4} cap {x / 5}"
 let ex2 = "vibecheck y = 10; lowkey (y > 5) {y - 3} cap {y + 3}"
 let ex3 = "vibecheck a = 2; vibecheck b = 3; 4 + a * b"
 let ex4 = "vibecheck x = 4; vibecheck y = 2; lowkey (x > y) {x / y} cap {y / x}"
-let ex5 = "vibecheck x = 3; vibecheck y = 4; lowkey (x = y) {x + y} cap {x - y}"
+let ex5 = "vibecheck x = 3; vibecheck y = 4; lowkey (x == y) {x + y} cap {x - y}"
 let ex6 = "vibecheck x = 5.5; vibecheck y = 10.0; lowkey (x < y) {y - x} cap {x - y}"
 let ex7 = "vibecheck x = 11; x <= 6; x"
 let ex8 = "vibecheck x = 0; x <= x + 5; x"
@@ -47,8 +47,8 @@ let tests = [
   make_b "gt_false" false "3 > 4";
   make_b "geq_true" true "4 >= 3";
   make_b "geq_false" false "3 >= 4";
-  make_b "equal_int_true" true "3 = 3";
-  make_b "equal_int_false" false "3 = 4";
+  make_b "equal_int_true" true "3 == 3";
+  make_b "equal_int_false" false "3 == 4";
   make_f "add_float" 5.5 "2.5 + 3.0";
   make_f "sub_float" 1.5 "3.5 - 2.0";
   make_f "mult_float" 7.5 "2.5 * 3.0";
@@ -62,8 +62,12 @@ let tests = [
   make_b "gt_float_false" false "3.5 > 4.0";
   make_b "geq_float_true" true "4.5 >= 4.0";
   make_b "geq_float_false" false "3.5 >= 4.0";
-  make_b "equal_float_true" true "3.5 = 3.5";
-  make_b "equal_float_false" false "3.5 = 4.0";
+  make_b "equal_float_true" true "3.5 == 3.5";
+  make_b "equal_float_false" false "3.5 == 4.0";
+  make_b "not_equal_int_true" true "3 != 4";
+  make_b "not_equal_int_false" false "3 != 3";
+  make_b "not_equal_float_true" true "3.5 != 4.0";
+  make_b "not_equal_float_false" false "3.5 != 3.5";
   make_b "conj" true "fr && fr";
   make_b "disj" false "nah || nah";
   make_fail "invalid conj" bop_err "5 && nah";
@@ -92,6 +96,22 @@ let tests = [
   make_s "complex concat" "hello60" ex10;
   make_i "while loop" 6 ex11;
   make_b "complex bool op" true ex12;
+  make_b "str_leq_true" true "\"apple\" <= \"banana\"";
+  make_b "str_leq_false" false "\"banana\" <= \"apple\"";
+  make_b "str_lt_true" true "\"apple\" < \"banana\"";
+  make_b "str_lt_false" false "\"banana\" < \"apple\"";
+  make_b "str_geq_true" true "\"banana\" >= \"apple\"";
+  make_b "str_geq_false" false "\"apple\" >= \"banana\"";
+  make_b "str_gt_true" true "\"banana\" > \"apple\"";
+  make_b "str_gt_false" false "\"apple\" > \"banana\"";
+  make_b "str_equal_true" true "\"hello\" == \"hello\"";
+  make_b "str_equal_false" false "\"hello\" == \"world\"";
+  make_b "str_not_equal_true" true "\"hello\" != \"world\"";
+  make_b "str_not_equal_false" false "\"hello\" != \"hello\"";
+  make_b "int_not_equal_true" true "3 != 4";
+  make_b "int_not_equal_false" false "3 != 3";
+  make_b "float_not_equal_true" true "3.5 != 4.0";
+  make_b "float_not_equal_false" false "3.5 != 3.5";
 ]
 
 let _ = run_test_tt_main ("zpp interpreter" >::: tests)
