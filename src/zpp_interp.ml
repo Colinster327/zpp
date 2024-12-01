@@ -183,22 +183,22 @@ let rec interp rho = function
         interp new_env body
       | _ -> failwith app_err)
 
-  let run s =
-    s |> parse |> interp init_env
+let run s =
+  s |> parse |> interp init_env
 
-  let int_of_expr = function
-    | Int x -> x
-    | _ -> failwith "Not type Int"
+let int_of_expr = function
+  | Int x -> x
+  | _ -> failwith "Not type Int"
 
-  let float_of_expr = function
-    | Float x -> x
-    | _ -> failwith "Not type Float"
+let float_of_expr = function
+  | Float x -> x
+  | _ -> failwith "Not type Float"
 
-  let bool_of_expr = function
-    | True -> true
-    | False -> false
-    | _ -> failwith "Not type Bool"
+let bool_of_expr = function
+  | True -> true
+  | False -> false
+  | _ -> failwith "Not type Bool"
 
-  let string_of_expr = function
-    | Str s -> s
-    | _ -> failwith "Not type String"
+let string_of_expr = function
+  | Str s -> s
+  | _ -> failwith "Not type String"

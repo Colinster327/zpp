@@ -80,7 +80,9 @@ expr:
   | x = ID; LEQ; e1 = expr; SEMI; e2 = expr { Upd (x, e1, e2) }
   | x = ID; LEQ; e1 = expr; SEMI { Upd (x, e1, Unit) }
   | LBRACE; params = id_list; RBRACE; RARROW; LBRACK; e = expr; RBRACK { Fun (params, e) }
+  | LBRACE; RBRACE; RARROW; LBRACK; e = expr; RBRACK { Fun ([], e) }
   | e = expr; LBRACE; args = expr_list; RBRACE { FApp (e, args) }
+  | e = expr; LBRACE; RBRACE { FApp (e, []) }
   | IF; LBRACE; e1 = expr; RBRACE; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK; e4 = expr { Ite (e1, e2, e3, e4) }
   | IF; LBRACE; e1 = expr; RBRACE; LBRACK; e2 = expr; RBRACK; ELSE; LBRACK; e3 = expr; RBRACK { Tny (e1, e2, e3) }
   | IF; LBRACE; e1 = expr; RBRACE; LBRACK; e2 = expr; RBRACK; e3 = expr { Ite (e1, e2, Unit, e3) }

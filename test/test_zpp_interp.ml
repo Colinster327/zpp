@@ -34,6 +34,7 @@ let ex11 = "vibecheck x = 0; grind [x < 6] {x <= x + 1;} x"
 let ex12 = "fr || fr && nah"
 let ex13 = "vibecheck fib = [n] => {lowkey [n < 2] { n } cap {fib [n - 1] + fib [n - 2]}}; fib [5]"
 let ex14 = "vibecheck add = [x, y] => {x + y}; add [5, 5]"
+let ex15 = "vibecheck x = [] => {5}; x []"
 
 let tests = [
   make_i "add" 6 "3 + 3";
@@ -100,6 +101,7 @@ let tests = [
   make_b "complex bool op" true ex12;
   make_i "fibonacci seq" 5 ex13;
   make_i "multi-var func" 10 ex14;
+  make_i "no-var func" 5 ex15;
   make_b "str_leq_true" true "\"apple\" <= \"banana\"";
   make_b "str_leq_false" false "\"banana\" <= \"apple\"";
   make_b "str_lt_true" true "\"apple\" < \"banana\"";
